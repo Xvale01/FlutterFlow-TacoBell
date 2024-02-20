@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "40561231365",
+    "project_id": "proyecto-taco-bell-help-ywxow0",
+    "storage_bucket": "proyecto-taco-bell-help-ywxow0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40561231365:android:9efd597576bb755ad4fe6c",
+        "android_client_info": {
+          "package_name": "com.mycompany.proyectotacobellhelpdesk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFH5yCt6JX8aLYTqE4XOP-d4ylDTLdtnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

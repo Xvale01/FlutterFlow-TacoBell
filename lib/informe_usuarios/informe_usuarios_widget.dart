@@ -2,7 +2,6 @@ import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'informe_usuarios_model.dart';
 export 'informe_usuarios_model.dart';
 
@@ -33,15 +32,6 @@ class _InformeUsuariosWidgetState extends State<InformeUsuariosWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return StreamBuilder<List<UserRecord>>(
       stream: queryUserRecord(),
       builder: (context, snapshot) {
@@ -73,8 +63,22 @@ class _InformeUsuariosWidgetState extends State<InformeUsuariosWidget> {
             appBar: AppBar(
               backgroundColor: const Color(0xFF43058C),
               automaticallyImplyLeading: false,
+              leading: InkWell(
+                splashColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onTap: () async {
+                  context.pushNamed('MenuUsuarios');
+                },
+                child: Icon(
+                  Icons.arrow_back_sharp,
+                  color: FlutterFlowTheme.of(context).primaryBackground,
+                  size: 35.0,
+                ),
+              ),
               title: Text(
-                'Información Usuarios',
+                'INFORMACION USUARIOS',
                 style: FlutterFlowTheme.of(context).headlineMedium.override(
                       fontFamily: 'Outfit',
                       color: Colors.white,
@@ -82,7 +86,7 @@ class _InformeUsuariosWidgetState extends State<InformeUsuariosWidget> {
                     ),
               ),
               actions: const [],
-              centerTitle: false,
+              centerTitle: true,
               elevation: 2.0,
             ),
             body: const SafeArea(

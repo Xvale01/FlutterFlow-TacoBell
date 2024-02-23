@@ -25,3 +25,10 @@ export '/informe_tiquetes_tecnicos/informe_tiquetes_tecnicos_widget.dart'
 export '/pages/homepage/homepage_widget.dart' show HomepageWidget;
 export '/informe_usuarios/informe_usuarios_widget.dart'
     show InformeUsuariosWidget;
+export '/menu_usuarios/menu_usuarios_widget.dart' show MenuUsuariosWidget;
+export '/eliminar_usuario/eliminar_usuario_widget.dart'
+    show EliminarUsuarioWidget;
+export '/modificar_usuario/modificar_usuario_widget.dart'
+    show ModificarUsuarioWidget;
+export '/historial_modificar_usuario/historial_modificar_usuario_widget.dart'
+    show HistorialModificarUsuarioWidget;

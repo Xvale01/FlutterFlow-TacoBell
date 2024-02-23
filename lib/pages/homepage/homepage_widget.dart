@@ -3,7 +3,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'homepage_model.dart';
 export 'homepage_model.dart';
 
@@ -34,15 +33,6 @@ class _HomepageWidgetState extends State<HomepageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -216,7 +206,7 @@ class _HomepageWidgetState extends State<HomepageWidget> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  if (valueOrDefault(currentUserDocument?.rol, '') == 'Tecnico')
+                  if (valueOrDefault(currentUserDocument?.rol, '') == 'Técnico')
                     AuthUserStreamWidget(
                       builder: (context) => FFButtonWidget(
                         onPressed: () async {
@@ -251,7 +241,7 @@ class _HomepageWidgetState extends State<HomepageWidget> {
               ),
             ),
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
+              padding: const EdgeInsetsDirectional.fromSTEB(0.0, 45.0, 0.0, 0.0),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [

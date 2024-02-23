@@ -1,4 +1,3 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -6,36 +5,45 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import 'package:flutter/material.dart';
-import 'crear_usuario_model.dart';
-export 'crear_usuario_model.dart';
+import 'modificar_usuario_model.dart';
+export 'modificar_usuario_model.dart';
 
-class CrearUsuarioWidget extends StatefulWidget {
-  const CrearUsuarioWidget({super.key});
+class ModificarUsuarioWidget extends StatefulWidget {
+  const ModificarUsuarioWidget({
+    super.key,
+    required this.user,
+  });
+
+  final UserRecord? user;
 
   @override
-  State<CrearUsuarioWidget> createState() => _CrearUsuarioWidgetState();
+  State<ModificarUsuarioWidget> createState() => _ModificarUsuarioWidgetState();
 }
 
-class _CrearUsuarioWidgetState extends State<CrearUsuarioWidget> {
-  late CrearUsuarioModel _model;
+class _ModificarUsuarioWidgetState extends State<ModificarUsuarioWidget> {
+  late ModificarUsuarioModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    _model = createModel(context, () => CrearUsuarioModel());
+    _model = createModel(context, () => ModificarUsuarioModel());
 
-    _model.txtUsuarioController ??= TextEditingController();
+    _model.txtUsuarioController ??=
+        TextEditingController(text: widget.user?.displayName);
     _model.txtUsuarioFocusNode ??= FocusNode();
 
-    _model.txtEmailController ??= TextEditingController();
+    _model.txtEmailController ??=
+        TextEditingController(text: widget.user?.email);
     _model.txtEmailFocusNode ??= FocusNode();
 
-    _model.txtCedulaController ??= TextEditingController();
+    _model.txtCedulaController ??=
+        TextEditingController(text: widget.user?.cedula.toString());
     _model.txtCedulaFocusNode ??= FocusNode();
 
-    _model.txtpasswordController ??= TextEditingController();
+    _model.txtpasswordController ??=
+        TextEditingController(text: widget.user?.contrasena);
     _model.txtpasswordFocusNode ??= FocusNode();
   }
 
@@ -68,12 +76,12 @@ class _CrearUsuarioWidgetState extends State<CrearUsuarioWidget> {
             },
             child: Icon(
               Icons.arrow_back,
-              color: FlutterFlowTheme.of(context).secondaryBackground,
+              color: FlutterFlowTheme.of(context).primaryBackground,
               size: 35.0,
             ),
           ),
           title: Text(
-            'CREAR USUARIO',
+            'MODIFICAR USUARIO',
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   color: Colors.white,
@@ -382,9 +390,12 @@ class _CrearUsuarioWidgetState extends State<CrearUsuarioWidget> {
                                       padding: const EdgeInsetsDirectional.fromSTEB(
                                           8.0, 10.0, 8.0, 0.0),
                                       child: FlutterFlowDropDown<String>(
-                                        controller: _model
-                                                .txtrolValueController ??=
-                                            FormFieldController<String>(null),
+                                        controller:
+                                            _model.txtrolValueController ??=
+                                                FormFieldController<String>(
+                                          _model.txtrolValue ??=
+                                              widget.user?.rol,
+                                        ),
                                         options: const ['Administrador', 'Técnico'],
                                         onChanged: (val) => setState(
                                             () => _model.txtrolValue = val),
@@ -531,37 +542,19 @@ class _CrearUsuarioWidgetState extends State<CrearUsuarioWidget> {
                                   children: [
                                     FFButtonWidget(
                                       onPressed: () async {
-                                        GoRouter.of(context).prepareAuthEvent();
-
-                                        final user = await authManager
-                                            .createAccountWithEmail(
-                                          context,
-                                          _model.txtEmailController.text,
-                                          _model.txtpasswordController.text,
-                                        );
-                                        if (user == null) {
-                                          return;
-                                        }
-
-                                        await UserRecord.collection
-                                            .doc(user.uid)
+                                        await widget.user!.reference
                                             .update(createUserRecordData(
-                                              email: _model
-                                                  .txtEmailController.text,
-                                              displayName: _model
-                                                  .txtUsuarioController.text,
-                                              cedula: int.tryParse(_model
-                                                  .txtCedulaController.text),
-                                              rol: _model.txtrolValue,
-                                              contrasena: _model
-                                                  .txtpasswordController.text,
-                                              createdTime: getCurrentTimestamp,
-                                            ));
-
-                                        context.goNamedAuth(
-                                            'HOMEPAGE', context.mounted);
+                                          displayName:
+                                              _model.txtUsuarioController.text,
+                                          email: _model.txtEmailController.text,
+                                          cedula: int.tryParse(
+                                              _model.txtCedulaController.text),
+                                          rol: _model.txtrolValue,
+                                          contrasena:
+                                              _model.txtpasswordController.text,
+                                        ));
                                       },
-                                      text: 'AGREGAR USUARIO',
+                                      text: 'MODIFICAR USUARIO',
                                       options: FFButtonOptions(
                                         width:
                                             MediaQuery.sizeOf(context).width *

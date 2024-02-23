@@ -3,7 +3,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'menu_principal_administrador_model.dart';
 export 'menu_principal_administrador_model.dart';
 
@@ -36,15 +35,6 @@ class _MenuPrincipalAdministradorWidgetState
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -79,9 +69,9 @@ class _MenuPrincipalAdministradorWidgetState
                         const EdgeInsetsDirectional.fromSTEB(0.0, 50.0, 0.0, 0.0),
                     child: FFButtonWidget(
                       onPressed: () async {
-                        context.pushNamed('CrearUsuario');
+                        context.pushNamed('MenuUsuarios');
                       },
-                      text: 'CREAR USUARIO',
+                      text: 'USUARIOS',
                       options: FFButtonOptions(
                         height: 60.0,
                         padding: const EdgeInsetsDirectional.fromSTEB(
@@ -187,28 +177,6 @@ class _MenuPrincipalAdministradorWidgetState
                     ),
                   ),
                 ],
-              ),
-            ),
-            FFButtonWidget(
-              onPressed: () async {
-                context.pushNamed('InformeUsuarios');
-              },
-              text: 'Button',
-              options: FFButtonOptions(
-                height: 40.0,
-                padding: const EdgeInsetsDirectional.fromSTEB(24.0, 0.0, 24.0, 0.0),
-                iconPadding: const EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                color: FlutterFlowTheme.of(context).primary,
-                textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                      fontFamily: 'Readex Pro',
-                      color: Colors.white,
-                    ),
-                elevation: 3.0,
-                borderSide: const BorderSide(
-                  color: Colors.transparent,
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.circular(8.0),
               ),
             ),
             Padding(

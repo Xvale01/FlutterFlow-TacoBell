@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '/backend/backend.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
@@ -154,6 +155,31 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'InformeUsuarios',
           path: '/informeUsuarios',
           builder: (context, params) => const InformeUsuariosWidget(),
+        ),
+        FFRoute(
+          name: 'MenuUsuarios',
+          path: '/menuUsuarios',
+          builder: (context, params) => const MenuUsuariosWidget(),
+        ),
+        FFRoute(
+          name: 'EliminarUsuario',
+          path: '/eliminarUsuario',
+          builder: (context, params) => const EliminarUsuarioWidget(),
+        ),
+        FFRoute(
+          name: 'ModificarUsuario',
+          path: '/modificarUsuario',
+          asyncParams: {
+            'user': getDoc(['user'], UserRecord.fromSnapshot),
+          },
+          builder: (context, params) => ModificarUsuarioWidget(
+            user: params.getParam('user', ParamType.Document),
+          ),
+        ),
+        FFRoute(
+          name: 'HistorialModificarUsuario',
+          path: '/historialModificarUsuario',
+          builder: (context, params) => const HistorialModificarUsuarioWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -325,6 +351,7 @@ class FFRoute {
           return null;
         },
         pageBuilder: (context, state) {
+          fixStatusBarOniOS16AndBelow(context);
           final ffParams = FFParameters(state, asyncParams);
           final page = ffParams.hasFutures
               ? FutureBuilder(

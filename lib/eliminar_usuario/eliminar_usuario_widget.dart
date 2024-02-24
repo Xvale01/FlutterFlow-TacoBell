@@ -191,6 +191,24 @@ class _EliminarUsuarioWidgetState extends State<EliminarUsuarioWidget> {
                                       onTap: () async {
                                         await columnUserRecord.reference
                                             .delete();
+                                        await showDialog(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: const Text('ELIMINAR USUSARIO'),
+                                              content: const Text(
+                                                  '¡El usuario se elimino!'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext),
+                                                  child: const Text('Ok'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
                                       },
                                       child: const Icon(
                                         Icons.delete,

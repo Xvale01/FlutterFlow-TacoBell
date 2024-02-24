@@ -558,6 +558,26 @@ class _CrearUsuarioWidgetState extends State<CrearUsuarioWidget> {
                                               createdTime: getCurrentTimestamp,
                                             ));
 
+                                        await showDialog(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title:
+                                                  const Text('CREACIÓN DE USUARIO'),
+                                              content: const Text(
+                                                  '¡El usuario se creo correctamente!'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext),
+                                                  child: const Text('Ok'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+
                                         context.goNamedAuth(
                                             'HOMEPAGE', context.mounted);
                                       },

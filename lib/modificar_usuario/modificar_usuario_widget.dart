@@ -553,6 +553,25 @@ class _ModificarUsuarioWidgetState extends State<ModificarUsuarioWidget> {
                                           contrasena:
                                               _model.txtpasswordController.text,
                                         ));
+                                        await showDialog(
+                                          context: context,
+                                          builder: (alertDialogContext) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                  'MODIFICACIÓN DE USUARIO'),
+                                              content: const Text(
+                                                  '¡El usuario se modificó!'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(
+                                                          alertDialogContext),
+                                                  child: const Text('Ok'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
                                       },
                                       text: 'MODIFICAR USUARIO',
                                       options: FFButtonOptions(

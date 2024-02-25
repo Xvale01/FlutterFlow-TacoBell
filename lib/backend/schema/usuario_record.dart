@@ -6,6 +6,7 @@ import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
 import 'index.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
 class UsuarioRecord extends FirestoreRecord {
   UsuarioRecord._(
@@ -40,6 +41,11 @@ class UsuarioRecord extends FirestoreRecord {
   String get rol => _rol ?? '';
   bool hasRol() => _rol != null;
 
+  // "Id_Tecnico" field.
+  int? _idTecnico;
+  int get idTecnico => _idTecnico ?? 0;
+  bool hasIdTecnico() => _idTecnico != null;
+
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
@@ -48,6 +54,7 @@ class UsuarioRecord extends FirestoreRecord {
     _apellido2 = snapshotData['Apellido2'] as String?;
     _telefono = snapshotData['Telefono'] as String?;
     _rol = snapshotData['Rol'] as String?;
+    _idTecnico = castToType<int>(snapshotData['Id_Tecnico']);
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -95,6 +102,7 @@ Map<String, dynamic> createUsuarioRecordData({
   String? apellido2,
   String? telefono,
   String? rol,
+  int? idTecnico,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -103,6 +111,7 @@ Map<String, dynamic> createUsuarioRecordData({
       'Apellido2': apellido2,
       'Telefono': telefono,
       'Rol': rol,
+      'Id_Tecnico': idTecnico,
     }.withoutNulls,
   );
 
@@ -118,12 +127,19 @@ class UsuarioRecordDocumentEquality implements Equality<UsuarioRecord> {
         e1?.apellido1 == e2?.apellido1 &&
         e1?.apellido2 == e2?.apellido2 &&
         e1?.telefono == e2?.telefono &&
-        e1?.rol == e2?.rol;
+        e1?.rol == e2?.rol &&
+        e1?.idTecnico == e2?.idTecnico;
   }
 
   @override
-  int hash(UsuarioRecord? e) => const ListEquality()
-      .hash([e?.nombre, e?.apellido1, e?.apellido2, e?.telefono, e?.rol]);
+  int hash(UsuarioRecord? e) => const ListEquality().hash([
+        e?.nombre,
+        e?.apellido1,
+        e?.apellido2,
+        e?.telefono,
+        e?.rol,
+        e?.idTecnico
+      ]);
 
   @override
   bool isValidKey(Object? o) => o is UsuarioRecord;

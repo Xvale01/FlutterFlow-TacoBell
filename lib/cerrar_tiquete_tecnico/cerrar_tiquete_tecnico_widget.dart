@@ -1,7 +1,12 @@
+import '/auth/firebase_auth/auth_util.dart';
+import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/form_field_controller.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'cerrar_tiquete_tecnico_model.dart';
 export 'cerrar_tiquete_tecnico_model.dart';
@@ -24,9 +29,6 @@ class _CerrarTiqueteTecnicoWidgetState
   void initState() {
     super.initState();
     _model = createModel(context, () => CerrarTiqueteTecnicoModel());
-
-    _model.textController ??= TextEditingController();
-    _model.textFieldFocusNode ??= FocusNode();
   }
 
   @override
@@ -117,40 +119,119 @@ class _CerrarTiqueteTecnicoWidgetState
                           children: [
                             Row(
                               mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(
-                                  child: Text(
-                                    'ID DEL TIQUETE',
-                                    textAlign: TextAlign.center,
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          color: const Color(0xFF2F075D),
-                                          fontSize: 20.0,
-                                        ),
+                                StreamBuilder<List<TicketsRecord>>(
+                                  stream: queryTicketsRecord(
+                                    queryBuilder: (ticketsRecord) =>
+                                        ticketsRecord
+                                            .where(
+                                              'Id_Estado',
+                                              isEqualTo: 1,
+                                            )
+                                            .where(
+                                              'Id_Tecnico',
+                                              isEqualTo: currentUserUid,
+                                            )
+                                            .orderBy('Id_Ticket'),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        0.0, 5.0, 0.0, 0.0),
-                                    child: Text(
-                                      'Hello World',
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            fontSize: 20.0,
+                                  builder: (context, snapshot) {
+                                    // Customize what your widget looks like when it's loading.
+                                    if (!snapshot.hasData) {
+                                      return Center(
+                                        child: SizedBox(
+                                          width: 50.0,
+                                          height: 50.0,
+                                          child: CircularProgressIndicator(
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              FlutterFlowTheme.of(context)
+                                                  .primary,
+                                            ),
                                           ),
-                                    ),
-                                  ),
+                                        ),
+                                      );
+                                    }
+                                    List<TicketsRecord>
+                                        ticketIDSelectionTicketsRecordList =
+                                        snapshot.data!;
+                                    return FlutterFlowDropDown<int>(
+                                      controller: _model
+                                              .ticketIDSelectionValueController ??=
+                                          FormFieldController<int>(
+                                        _model.ticketIDSelectionValue ??=
+                                            ticketIDSelectionTicketsRecordList
+                                                .length,
+                                      ),
+                                      options: List<int>.from(<int>[]),
+                                      optionLabels:
+                                          ticketIDSelectionTicketsRecordList
+                                              .map((e) => e.idTicket.toString())
+                                              .toList(),
+                                      onChanged: (val) async {
+                                        setState(() => _model
+                                            .ticketIDSelectionValue = val);
+                                        _model.varTicketSelected =
+                                            await queryTicketsRecordOnce(
+                                          queryBuilder: (ticketsRecord) =>
+                                              ticketsRecord.where(
+                                            'Id_Ticket',
+                                            isEqualTo:
+                                                _model.ticketIDSelectionValue,
+                                          ),
+                                          singleRecord: true,
+                                        ).then((s) => s.firstOrNull);
+                                        _model.varClientTicketSelected =
+                                            await queryClientesRecordOnce(
+                                          queryBuilder: (clientesRecord) =>
+                                              clientesRecord.where(
+                                            'Id_Cliente',
+                                            isEqualTo: _model
+                                                .varTicketSelected?.idCliente,
+                                          ),
+                                          singleRecord: true,
+                                        ).then((s) => s.firstOrNull);
+                                        _model.varSucursalTicket =
+                                            await querySucursalRecordOnce(
+                                          queryBuilder: (sucursalRecord) =>
+                                              sucursalRecord.where(
+                                            'Id_Cliente',
+                                            isEqualTo: _model
+                                                .varClientTicketSelected
+                                                ?.idCliente,
+                                          ),
+                                          singleRecord: true,
+                                        ).then((s) => s.firstOrNull);
+
+                                        setState(() {});
+                                      },
+                                      width: 300.0,
+                                      height: 50.0,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .bodyMedium,
+                                      hintText:
+                                          'Por favor selecciona el ticket ID...',
+                                      icon: Icon(
+                                        Icons.keyboard_arrow_down_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                        size: 24.0,
+                                      ),
+                                      fillColor: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      elevation: 2.0,
+                                      borderColor: FlutterFlowTheme.of(context)
+                                          .alternate,
+                                      borderWidth: 2.0,
+                                      borderRadius: 8.0,
+                                      margin: const EdgeInsetsDirectional.fromSTEB(
+                                          16.0, 4.0, 16.0, 4.0),
+                                      hidesUnderline: true,
+                                      isOverButton: true,
+                                      isSearchable: false,
+                                      isMultiSelect: false,
+                                    );
+                                  },
                                 ),
                               ],
                             ),
@@ -183,15 +264,56 @@ class _CerrarTiqueteTecnicoWidgetState
                                   child: Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 5.0, 0.0, 0.0),
-                                    child: Text(
-                                      'Hello World',
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            fontSize: 20.0,
-                                          ),
+                                    child: StreamBuilder<List<TicketsRecord>>(
+                                      stream: queryTicketsRecord(
+                                        queryBuilder: (ticketsRecord) =>
+                                            ticketsRecord.where(
+                                          'Id_Ticket',
+                                          isEqualTo:
+                                              _model.ticketIDSelectionValue,
+                                        ),
+                                        singleRecord: true,
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        List<TicketsRecord>
+                                            textTicketsRecordList =
+                                            snapshot.data!;
+                                        // Return an empty Container when the item does not exist.
+                                        if (snapshot.data!.isEmpty) {
+                                          return Container();
+                                        }
+                                        final textTicketsRecord =
+                                            textTicketsRecordList.isNotEmpty
+                                                ? textTicketsRecordList.first
+                                                : null;
+                                        return Text(
+                                          _model.varSucursalTicket!.nombre,
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                fontSize: 20.0,
+                                              ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),
@@ -226,15 +348,56 @@ class _CerrarTiqueteTecnicoWidgetState
                                   child: Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 5.0, 0.0, 0.0),
-                                    child: Text(
-                                      'Hello World',
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            fontSize: 20.0,
-                                          ),
+                                    child: StreamBuilder<List<TicketsRecord>>(
+                                      stream: queryTicketsRecord(
+                                        queryBuilder: (ticketsRecord) =>
+                                            ticketsRecord.where(
+                                          'Id_Ticket',
+                                          isEqualTo:
+                                              _model.ticketIDSelectionValue,
+                                        ),
+                                        singleRecord: true,
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        List<TicketsRecord>
+                                            textTicketsRecordList =
+                                            snapshot.data!;
+                                        // Return an empty Container when the item does not exist.
+                                        if (snapshot.data!.isEmpty) {
+                                          return Container();
+                                        }
+                                        final textTicketsRecord =
+                                            textTicketsRecordList.isNotEmpty
+                                                ? textTicketsRecordList.first
+                                                : null;
+                                        return Text(
+                                          _model.varTicketSelected!.descripcion,
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                fontSize: 20.0,
+                                              ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),
@@ -248,7 +411,7 @@ class _CerrarTiqueteTecnicoWidgetState
                                     padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 5.0, 0.0, 0.0),
                                     child: Text(
-                                      'TÉCNICO ASIGNADO',
+                                      'PRIORIDAD',
                                       textAlign: TextAlign.center,
                                       style: FlutterFlowTheme.of(context)
                                           .bodyMedium
@@ -269,15 +432,56 @@ class _CerrarTiqueteTecnicoWidgetState
                                   child: Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 5.0, 0.0, 0.0),
-                                    child: Text(
-                                      'Hello World',
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            fontSize: 20.0,
-                                          ),
+                                    child: StreamBuilder<List<TicketsRecord>>(
+                                      stream: queryTicketsRecord(
+                                        queryBuilder: (ticketsRecord) =>
+                                            ticketsRecord.where(
+                                          'Id_Ticket',
+                                          isEqualTo:
+                                              _model.ticketIDSelectionValue,
+                                        ),
+                                        singleRecord: true,
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        List<TicketsRecord>
+                                            textTicketsRecordList =
+                                            snapshot.data!;
+                                        // Return an empty Container when the item does not exist.
+                                        if (snapshot.data!.isEmpty) {
+                                          return Container();
+                                        }
+                                        final textTicketsRecord =
+                                            textTicketsRecordList.isNotEmpty
+                                                ? textTicketsRecordList.first
+                                                : null;
+                                        return Text(
+                                          _model.varTicketSelected!.prioridad,
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                fontSize: 20.0,
+                                              ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),
@@ -312,15 +516,59 @@ class _CerrarTiqueteTecnicoWidgetState
                                   child: Padding(
                                     padding: const EdgeInsetsDirectional.fromSTEB(
                                         0.0, 5.0, 0.0, 0.0),
-                                    child: Text(
-                                      'Hello World',
-                                      textAlign: TextAlign.center,
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            fontSize: 20.0,
-                                          ),
+                                    child: StreamBuilder<List<TicketsRecord>>(
+                                      stream: queryTicketsRecord(
+                                        queryBuilder: (ticketsRecord) =>
+                                            ticketsRecord.where(
+                                          'Id_Ticket',
+                                          isEqualTo:
+                                              _model.ticketIDSelectionValue,
+                                        ),
+                                        singleRecord: true,
+                                      ),
+                                      builder: (context, snapshot) {
+                                        // Customize what your widget looks like when it's loading.
+                                        if (!snapshot.hasData) {
+                                          return Center(
+                                            child: SizedBox(
+                                              width: 50.0,
+                                              height: 50.0,
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        List<TicketsRecord>
+                                            textTicketsRecordList =
+                                            snapshot.data!;
+                                        // Return an empty Container when the item does not exist.
+                                        if (snapshot.data!.isEmpty) {
+                                          return Container();
+                                        }
+                                        final textTicketsRecord =
+                                            textTicketsRecordList.isNotEmpty
+                                                ? textTicketsRecordList.first
+                                                : null;
+                                        return Text(
+                                          dateTimeFormat(
+                                              'MMMMEEEEd',
+                                              _model.varTicketSelected!
+                                                  .fechaCreacion!),
+                                          textAlign: TextAlign.center,
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily: 'Readex Pro',
+                                                fontSize: 20.0,
+                                              ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),
@@ -350,71 +598,40 @@ class _CerrarTiqueteTecnicoWidgetState
                             ),
                             Row(
                               mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(
-                                        8.0, 0.0, 8.0, 0.0),
-                                    child: TextFormField(
-                                      controller: _model.textController,
-                                      focusNode: _model.textFieldFocusNode,
-                                      autofocus: true,
-                                      obscureText: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'ESTADO DEL TICKET...',
-                                        labelStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium,
-                                        hintStyle: FlutterFlowTheme.of(context)
-                                            .labelMedium,
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: FlutterFlowTheme.of(context)
-                                                .alternate,
-                                            width: 2.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: FlutterFlowTheme.of(context)
-                                                .primary,
-                                            width: 2.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                        errorBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: FlutterFlowTheme.of(context)
-                                                .error,
-                                            width: 2.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                        focusedErrorBorder:
-                                            UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                            color: FlutterFlowTheme.of(context)
-                                                .error,
-                                            width: 2.0,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                      ),
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Readex Pro',
-                                            fontSize: 20.0,
-                                          ),
-                                      textAlign: TextAlign.center,
-                                      validator: _model.textControllerValidator
-                                          .asValidator(context),
-                                    ),
+                                FlutterFlowDropDown<String>(
+                                  controller: _model
+                                          .tickeStatusSelectionValueController ??=
+                                      FormFieldController<String>(null),
+                                  options: const ['Cerrado', 'Pendiente'],
+                                  onChanged: (val) => setState(() =>
+                                      _model.tickeStatusSelectionValue = val),
+                                  width: 300.0,
+                                  height: 50.0,
+                                  textStyle:
+                                      FlutterFlowTheme.of(context).bodyMedium,
+                                  hintText:
+                                      'Selecciona el estado del ticket...',
+                                  icon: Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryText,
+                                    size: 24.0,
                                   ),
+                                  fillColor: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  elevation: 2.0,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).alternate,
+                                  borderWidth: 2.0,
+                                  borderRadius: 8.0,
+                                  margin: const EdgeInsetsDirectional.fromSTEB(
+                                      16.0, 4.0, 16.0, 4.0),
+                                  hidesUnderline: true,
+                                  isOverButton: true,
+                                  isSearchable: false,
+                                  isMultiSelect: false,
                                 ),
                               ],
                             ),
@@ -427,8 +644,40 @@ class _CerrarTiqueteTecnicoWidgetState
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   FFButtonWidget(
-                                    onPressed: () {
-                                      print('btnrcreartiquete pressed ...');
+                                    onPressed: () async {
+                                      if (_model.tickeStatusSelectionValue ==
+                                          'Cerrado') {
+                                        await _model
+                                            .varTicketSelected!.reference
+                                            .update(createTicketsRecordData(
+                                          idEstado: 1,
+                                        ));
+                                      } else {
+                                        await _model
+                                            .varTicketSelected!.reference
+                                            .update(createTicketsRecordData(
+                                          idEstado: 0,
+                                        ));
+                                      }
+
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Información del Ticket Actualizada',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryText,
+                                            ),
+                                          ),
+                                          duration:
+                                              const Duration(milliseconds: 4000),
+                                          backgroundColor:
+                                              FlutterFlowTheme.of(context)
+                                                  .secondary,
+                                        ),
+                                      );
                                     },
                                     text: 'ACTUALIZAR TIQUETE',
                                     options: FFButtonOptions(

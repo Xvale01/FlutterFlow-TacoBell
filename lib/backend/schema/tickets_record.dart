@@ -46,6 +46,11 @@ class TicketsRecord extends FirestoreRecord {
   String get descripcion => _descripcion ?? '';
   bool hasDescripcion() => _descripcion != null;
 
+  // "Id_Tecnico" field.
+  String? _idTecnico;
+  String get idTecnico => _idTecnico ?? '';
+  bool hasIdTecnico() => _idTecnico != null;
+
   void _initializeFields() {
     _idTicket = castToType<int>(snapshotData['Id_Ticket']);
     _prioridad = snapshotData['Prioridad'] as String?;
@@ -53,6 +58,7 @@ class TicketsRecord extends FirestoreRecord {
     _idEstado = castToType<int>(snapshotData['Id_Estado']);
     _fechaCreacion = snapshotData['Fecha_Creacion'] as DateTime?;
     _descripcion = snapshotData['Descripcion'] as String?;
+    _idTecnico = snapshotData['Id_Tecnico'] as String?;
   }
 
   static CollectionReference get collection =>
@@ -96,6 +102,7 @@ Map<String, dynamic> createTicketsRecordData({
   int? idEstado,
   DateTime? fechaCreacion,
   String? descripcion,
+  String? idTecnico,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -105,6 +112,7 @@ Map<String, dynamic> createTicketsRecordData({
       'Id_Estado': idEstado,
       'Fecha_Creacion': fechaCreacion,
       'Descripcion': descripcion,
+      'Id_Tecnico': idTecnico,
     }.withoutNulls,
   );
 
@@ -121,7 +129,8 @@ class TicketsRecordDocumentEquality implements Equality<TicketsRecord> {
         e1?.idCliente == e2?.idCliente &&
         e1?.idEstado == e2?.idEstado &&
         e1?.fechaCreacion == e2?.fechaCreacion &&
-        e1?.descripcion == e2?.descripcion;
+        e1?.descripcion == e2?.descripcion &&
+        e1?.idTecnico == e2?.idTecnico;
   }
 
   @override
@@ -131,7 +140,8 @@ class TicketsRecordDocumentEquality implements Equality<TicketsRecord> {
         e?.idCliente,
         e?.idEstado,
         e?.fechaCreacion,
-        e?.descripcion
+        e?.descripcion,
+        e?.idTecnico
       ]);
 
   @override

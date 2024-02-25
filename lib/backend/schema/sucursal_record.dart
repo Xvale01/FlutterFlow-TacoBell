@@ -6,6 +6,7 @@ import '/backend/schema/util/firestore_util.dart';
 import '/backend/schema/util/schema_util.dart';
 
 import 'index.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
 class SucursalRecord extends FirestoreRecord {
   SucursalRecord._(
@@ -30,12 +31,18 @@ class SucursalRecord extends FirestoreRecord {
   String get ubicacion => _ubicacion ?? '';
   bool hasUbicacion() => _ubicacion != null;
 
+  // "Id_Cliente" field.
+  int? _idCliente;
+  int get idCliente => _idCliente ?? 0;
+  bool hasIdCliente() => _idCliente != null;
+
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
     _nombre = snapshotData['Nombre'] as String?;
     _telefono = snapshotData['Telefono'] as String?;
     _ubicacion = snapshotData['Ubicacion'] as String?;
+    _idCliente = castToType<int>(snapshotData['Id_Cliente']);
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -81,12 +88,14 @@ Map<String, dynamic> createSucursalRecordData({
   String? nombre,
   String? telefono,
   String? ubicacion,
+  int? idCliente,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
       'Nombre': nombre,
       'Telefono': telefono,
       'Ubicacion': ubicacion,
+      'Id_Cliente': idCliente,
     }.withoutNulls,
   );
 
@@ -100,12 +109,13 @@ class SucursalRecordDocumentEquality implements Equality<SucursalRecord> {
   bool equals(SucursalRecord? e1, SucursalRecord? e2) {
     return e1?.nombre == e2?.nombre &&
         e1?.telefono == e2?.telefono &&
-        e1?.ubicacion == e2?.ubicacion;
+        e1?.ubicacion == e2?.ubicacion &&
+        e1?.idCliente == e2?.idCliente;
   }
 
   @override
-  int hash(SucursalRecord? e) =>
-      const ListEquality().hash([e?.nombre, e?.telefono, e?.ubicacion]);
+  int hash(SucursalRecord? e) => const ListEquality()
+      .hash([e?.nombre, e?.telefono, e?.ubicacion, e?.idCliente]);
 
   @override
   bool isValidKey(Object? o) => o is SucursalRecord;

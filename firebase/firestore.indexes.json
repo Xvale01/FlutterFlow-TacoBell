@@ -1,3 +1,34 @@
 {
-  "indexes": []
+  "indexes": [
+    {
+      "collectionGroup": "Tickets",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "Id_Estado",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "Id_Tecnico",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "Id_Ticket",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "Sucursal",
+      "fieldPath": "Id_Cliente",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    }
+  ]
 }

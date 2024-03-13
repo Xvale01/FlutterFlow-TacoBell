@@ -34,6 +34,8 @@ class FlutterFlowDropDown<T> extends StatefulWidget {
     this.menuOffset,
     this.isSearchable = false,
     this.isMultiSelect = false,
+    this.labelText,
+    this.labelTextStyle,
   }) : assert(
           isMultiSelect
               ? (controller == null &&
@@ -74,6 +76,8 @@ class FlutterFlowDropDown<T> extends StatefulWidget {
   final Offset? menuOffset;
   final bool isSearchable;
   final bool isMultiSelect;
+  final String? labelText;
+  final TextStyle? labelTextStyle;
 
   @override
   State<FlutterFlowDropDown<T>> createState() => _FlutterFlowDropDownState<T>();
@@ -179,7 +183,7 @@ class _FlutterFlowDropDownState<T> extends State<FlutterFlowDropDown<T>> {
       _useDropdown2() ? _buildDropdown() : _buildLegacyDropdown();
 
   Widget _buildLegacyDropdown() {
-    return DropdownButton<T>(
+    return DropdownButtonFormField<T>(
       value: currentValue,
       hint: _createHintText(),
       items: _createMenuItems(),
@@ -189,6 +193,15 @@ class _FlutterFlowDropDownState<T> extends State<FlutterFlowDropDown<T>> {
       isExpanded: true,
       dropdownColor: widget.fillColor,
       focusColor: Colors.transparent,
+      decoration: InputDecoration(
+        labelText: widget.labelText == null || widget.labelText!.isEmpty
+            ? null
+            : widget.labelText,
+        labelStyle: widget.labelTextStyle,
+        border: widget.hidesUnderline
+            ? InputBorder.none
+            : const UnderlineInputBorder(),
+      ),
     );
   }
 

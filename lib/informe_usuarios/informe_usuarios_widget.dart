@@ -1,3 +1,4 @@
+import '/components/table_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
@@ -67,11 +68,17 @@ class _InformeUsuariosWidgetState extends State<InformeUsuariosWidget> {
           centerTitle: true,
           elevation: 2.0,
         ),
-        body: const SafeArea(
+        body: SafeArea(
           top: true,
           child: Column(
             mainAxisSize: MainAxisSize.max,
-            children: [],
+            children: [
+              wrapWithModel(
+                model: _model.tableModel,
+                updateCallback: () => setState(() {}),
+                child: const TableWidget(),
+              ),
+            ],
           ),
         ),
       ),

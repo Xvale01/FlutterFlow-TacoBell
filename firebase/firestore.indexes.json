@@ -1,24 +1,5 @@
 {
-  "indexes": [
-    {
-      "collectionGroup": "Tickets",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "Id_Estado",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "Id_Tecnico",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "Id_Ticket",
-          "order": "ASCENDING"
-        }
-      ]
-    }
-  ],
+  "indexes": [],
   "fieldOverrides": [
     {
       "collectionGroup": "Sucursal",

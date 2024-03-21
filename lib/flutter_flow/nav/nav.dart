@@ -87,29 +87,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => const LoginWidget(),
         ),
         FFRoute(
-          name: 'MenuPrincipalAdministrador',
-          path: '/menuPrincipalAdministrador',
-          builder: (context, params) => const MenuPrincipalAdministradorWidget(),
-        ),
-        FFRoute(
-          name: 'MenuPrincipalTecnico',
-          path: '/menuPrincipalTecnico',
-          builder: (context, params) => const MenuPrincipalTecnicoWidget(),
-        ),
-        FFRoute(
           name: 'CrearUsuario',
           path: '/crearUsuario',
           builder: (context, params) => const CrearUsuarioWidget(),
         ),
         FFRoute(
-          name: 'MenuTiqueteAdministrador',
-          path: '/menuTiqueteAdministrador',
-          builder: (context, params) => const MenuTiqueteAdministradorWidget(),
-        ),
-        FFRoute(
-          name: 'MenuTiqueteTecnico',
-          path: '/menuTiqueteTecnico',
-          builder: (context, params) => const MenuTiqueteTecnicoWidget(),
+          name: 'MenuTiquetes',
+          path: '/menuTiquetes',
+          builder: (context, params) => const MenuTiquetesWidget(),
         ),
         FFRoute(
           name: 'CrearTiquete',
@@ -125,11 +110,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'ModificarTiqueteAdministrador',
           path: '/modificarTiqueteAdministrador',
           builder: (context, params) => const ModificarTiqueteAdministradorWidget(),
-        ),
-        FFRoute(
-          name: 'MenuTiqueteAsignadoTecnico',
-          path: '/menuTiqueteAsignadoTecnico',
-          builder: (context, params) => const MenuTiqueteAsignadoTecnicoWidget(),
         ),
         FFRoute(
           name: 'CerrarTiqueteTecnico',
@@ -180,6 +160,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'HistorialModificarUsuario',
           path: '/historialModificarUsuario',
           builder: (context, params) => const HistorialModificarUsuarioWidget(),
+        ),
+        FFRoute(
+          name: 'MenuTiquetesAsignados',
+          path: '/menuTiquetesAsignados',
+          builder: (context, params) => const MenuTiquetesAsignadosWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

@@ -15,10 +15,10 @@ class CrearTiqueteModel extends FlutterFlowModel<CrearTiqueteWidget> {
   FocusNode? txtSucursalFocusNode;
   TextEditingController? txtSucursalController;
   String? Function(BuildContext, String?)? txtSucursalControllerValidator;
-  // State field(s) for txt_descripsoporte widget.
-  FocusNode? txtDescripsoporteFocusNode;
-  TextEditingController? txtDescripsoporteController;
-  String? Function(BuildContext, String?)? txtDescripsoporteControllerValidator;
+  // State field(s) for txt_descripcion widget.
+  FocusNode? txtDescripcionFocusNode;
+  TextEditingController? txtDescripcionController;
+  String? Function(BuildContext, String?)? txtDescripcionControllerValidator;
   // State field(s) for txtusuarioasignado widget.
   String? txtusuarioasignadoValue;
   FormFieldController<String>? txtusuarioasignadoValueController;
@@ -45,8 +45,8 @@ class CrearTiqueteModel extends FlutterFlowModel<CrearTiqueteWidget> {
     txtSucursalFocusNode?.dispose();
     txtSucursalController?.dispose();
 
-    txtDescripsoporteFocusNode?.dispose();
-    txtDescripsoporteController?.dispose();
+    txtDescripcionFocusNode?.dispose();
+    txtDescripcionController?.dispose();
 
     txtFechaFocusNode?.dispose();
     txtFechaController?.dispose();

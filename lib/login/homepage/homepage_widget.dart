@@ -61,7 +61,7 @@ class _HomepageWidgetState extends State<HomepageWidget> {
                   await authManager.signOut();
                   GoRouter.of(context).clearRedirectLocation();
 
-                  context.goNamedAuth('LOGIN', context.mounted);
+                  context.goNamedAuth('CrearTiquete', context.mounted);
                 },
                 child: Icon(
                   Icons.logout,

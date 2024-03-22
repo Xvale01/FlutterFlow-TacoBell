@@ -32,8 +32,8 @@ class _CrearTiqueteWidgetState extends State<CrearTiqueteWidget> {
     _model.txtSucursalController ??= TextEditingController();
     _model.txtSucursalFocusNode ??= FocusNode();
 
-    _model.txtDescripsoporteController ??= TextEditingController();
-    _model.txtDescripsoporteFocusNode ??= FocusNode();
+    _model.txtDescripcionController ??= TextEditingController();
+    _model.txtDescripcionFocusNode ??= FocusNode();
 
     _model.txtFechaController ??= TextEditingController();
     _model.txtFechaFocusNode ??= FocusNode();
@@ -276,9 +276,9 @@ class _CrearTiqueteWidgetState extends State<CrearTiqueteWidget> {
                                       width: double.infinity,
                                       child: TextFormField(
                                         controller:
-                                            _model.txtDescripsoporteController,
+                                            _model.txtDescripcionController,
                                         focusNode:
-                                            _model.txtDescripsoporteFocusNode,
+                                            _model.txtDescripcionFocusNode,
                                         autofocus: true,
                                         obscureText: false,
                                         decoration: InputDecoration(
@@ -343,7 +343,7 @@ class _CrearTiqueteWidgetState extends State<CrearTiqueteWidget> {
                                             .bodyMedium,
                                         maxLines: 6,
                                         validator: _model
-                                            .txtDescripsoporteControllerValidator
+                                            .txtDescripcionControllerValidator
                                             .asValidator(context),
                                       ),
                                     ),
@@ -594,8 +594,34 @@ class _CrearTiqueteWidgetState extends State<CrearTiqueteWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     FFButtonWidget(
-                      onPressed: () {
-                        print('btnrcreartiquete pressed ...');
+                      onPressed: () async {
+                        await TiquetesRecord.collection
+                            .doc()
+                            .set(createTiquetesRecordData(
+                              idTiquete: int.tryParse(
+                                  _model.txtIdtiqueteController.text),
+                              sucursal: _model.txtSucursalController.text,
+                              descripcion: _model.txtDescripcionController.text,
+                              fecha: _model.txtFechaController.text,
+                              estadoTiquete:
+                                  _model.txtEstadotiqueteController.text,
+                            ));
+                        await showDialog(
+                          context: context,
+                          builder: (alertDialogContext) {
+                            return AlertDialog(
+                              title: const Text('Listo'),
+                              content: const Text('El ticket ha sido creado'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(alertDialogContext),
+                                  child: const Text('Ok'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                       text: 'CREAR TIQUETE',
                       options: FFButtonOptions(
@@ -621,8 +647,14 @@ class _CrearTiqueteWidgetState extends State<CrearTiqueteWidget> {
                       ),
                     ),
                     FFButtonWidget(
-                      onPressed: () {
-                        print('btnrcreartiquete pressed ...');
+                      onPressed: () async {
+                        setState(() {
+                          _model.txtIdtiqueteController?.clear();
+                          _model.txtSucursalController?.clear();
+                          _model.txtDescripcionController?.clear();
+                          _model.txtFechaController?.clear();
+                          _model.txtEstadotiqueteController?.clear();
+                        });
                       },
                       text: 'LIMPIAR',
                       options: FFButtonOptions(

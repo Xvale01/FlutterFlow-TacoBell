@@ -73,13 +73,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? const HomepageWidget() : const LoginWidget(),
+          appStateNotifier.loggedIn ? const HomepageWidget() : const CrearTiqueteWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) =>
-              appStateNotifier.loggedIn ? const HomepageWidget() : const LoginWidget(),
+          builder: (context, _) => appStateNotifier.loggedIn
+              ? const HomepageWidget()
+              : const CrearTiqueteWidget(),
         ),
         FFRoute(
           name: 'LOGIN',
@@ -331,7 +332,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.location);
-            return '/login';
+            return '/crearTiquete';
           }
           return null;
         },
